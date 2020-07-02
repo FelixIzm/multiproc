@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import requests, re
 import asyncio,urllib.parse
-from requests_html import HTMLSession
+#from requests_html import HTMLSession
 import csv,sys
 import sqlite3
 import argparse
@@ -63,7 +63,7 @@ url2 = '/search.htm?'
 ps = '100'
 # место призыва - d
 # место рождения - pb
-url3='pb=T~Золотухино&entity=000000011111110&entities=24,28,27,23,34,22,20,21&ps=100'
+url3='pb=T~Золотухино&entity=000000011111110&entities=24,28,27,23,34,22,20,21&ps=200'
 
 
 def excepthook(type, value, traceback):
@@ -113,12 +113,15 @@ def main():
             headers['Upgrade-Insecure-Requests']='1'
             headers['path'] = '/html/search.htm?'+urllib.parse.quote(url3)
 
+            # totalCount = 350
+
             r2 = requests.get(URL_search,cookies=cookies,headers=headers)
             match = re.search(r'countPages = \d+',r2.text)
             if match:
                 m1=re.search(r'\d+',match[0])
                 countPages = (m1[0])
-                print('countPages === {}'.format(countPages))
+                print(match)
+                #print('countPages === {}'.format(countPages))
             if(countPages==''):
                 #raise Exception('Не определилось число страниц')
                 raise ValueError('Не определилось число страниц!')
@@ -138,6 +141,8 @@ main()
 #print('secret cookie = '+secret_cookie_value)
 #print('JSESSIONID = '+JSESSIONID_value)
 print('countPages = '+countPages)
+
+#sys.exit(0)
 
 
 ids=[]
